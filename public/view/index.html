@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="css/style.css" />
+    <title>Whatsapp Bot</title>
+  </head>
+  <body>
+    <div id="app">
+      <h1>Whatsapp Bot</h1>
+      <p>By Ihyamars</p>
+      <img src="" alt="QR Code" id="qrcode" />
+      <h3>Logs:</h3>
+      <ul class="logs"></ul>
+    </div>
+
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.1/jquery.min.js"
+      integrity="sha512-aVKKRRi/Q/YV+4mjoKBsE4x3H+BkegoM/em46NNlCqNTmUYADjBbeNefNxYV7giUp0VxICtqdrbqU7iVaeZNXA=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    ></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.5.2/socket.io.js"
+      integrity="sha512-VJ6+sp2E5rFQk05caiXXzQd1wBABpjEj1r5kMiLmGAAgwPItw1YpqsCCBtq8Yr1x6C49/mTpRdXtq8O2RcZhlQ=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    ></script>
+    <script>
+      $(document).ready(function () {
+        var socket = io.connect();
+
+        socket.on("message", function (msg) {
+          $(".logs").prepend($("<li>").text(msg));
+        });
+
+        socket.on("qr", function (src) {
+          $("#qrcode").attr("src", src);
+          $("#qrcode").show();
+        });
+
+        socket.on("ready", function (data) {
+          $("#qrcode").hide();
+        });
+
+        socket.on("authenticated", function (data) {
+          $("#qrcode").hide();
+        });
+      });
+    </script>
+  </body>
+</html>
